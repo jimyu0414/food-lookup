@@ -1,14 +1,14 @@
 const express = require('express');
 const fs = require('fs');
 const sqlite = require('sql.js');
+const PORT = process.env.PORT || 3001;
 
 const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
 
 const db = new sqlite.Database(filebuffer);
 
 const app = express();
-
-app.set('port', (process.env.API_PORT || 3001));
+app.set('port', (process.env.API_PORT || 4001));
 
 const COLUMNS = [
   'carbohydrate_g',
@@ -19,6 +19,7 @@ const COLUMNS = [
   'kcal',
   'description',
 ];
+
 app.get('/api/food', (req, res) => {
   const param = req.query.q;
 
@@ -58,6 +59,10 @@ app.get('/api/food', (req, res) => {
   } else {
     res.json([]);
   }
+});
+
+app.listen(PORT, function () {
+  console.log('listening')
 });
 
 export default app;
